@@ -1,6 +1,7 @@
 package com.tw.banking;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
 
 import java.lang.reflect.Array;
 import java.util.Arrays;
@@ -25,7 +26,7 @@ class PrinterTest {
     }
 
     @Test
-    void should_return_correct_format_str_when_execute_statementLine2(){
+    void should_console_in_order_when_print_transactions(){
         //given
         Console mockConsole = mock(Console.class);
         Printer printer = spy(new Printer(mockConsole));
@@ -37,9 +38,11 @@ class PrinterTest {
         printer.print(Arrays.asList(transaction1, transaction2));
 
         //then
-        verify(mockConsole, times(1)).printLine(STATEMENT_HEADER);
-        verify(mockConsole).printLine("29/06/2021 | 200 | 300");
-        verify(mockConsole).printLine("28/06/2021 | 100 | 100");
+        InOrder inOrder = inOrder(mockConsole);
+
+        inOrder.verify(mockConsole).printLine(STATEMENT_HEADER);
+        inOrder.verify(mockConsole).printLine("29/06/2021 | 200 | 300");
+        inOrder.verify(mockConsole).printLine("28/06/2021 | 100 | 100");
     }
 
     // mock private methods
